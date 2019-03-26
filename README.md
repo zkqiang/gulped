@@ -1,5 +1,7 @@
 # Gulped [![devDependency Status][daviddm-image]][daviddm-url]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mrDinckleman/gulped.svg)](https://greenkeeper.io/)
+
 > Project template based on [SASS](http://sass-lang.com/) and [EJS](http://ejs.co/) builded with [Gulp](https://gulpjs.com/)
 
 Make HTML markup easily with this project template.
