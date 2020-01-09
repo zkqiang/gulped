@@ -32,31 +32,31 @@ const through2 = through2Module.obj;
 const browserSync = browserSyncModule.create();
 
 const { argv } = yargs;
-const isDevelopment = !argv.p;
+const isDevelopment = !argv.d;
 
 const paths = {
-  views: {
-    src: 'app/views',
+  pages: {
+    src: 'src/pages',
     dest: 'public',
   },
   styles: {
-    src: 'app/scss',
+    src: 'src/scss',
     dest: 'public/assets/css',
   },
   scripts: {
-    src: 'app/js',
+    src: 'src/js',
     dest: 'public/assets/js',
   },
   images: {
-    src: 'app/images',
+    src: 'src/assets/images',
     dest: 'public/assets/images',
   },
   fonts: {
-    src: 'app/fonts',
+    src: 'src/assets/fonts',
     dest: 'public/assets/fonts',
   },
   statics: {
-    src: 'app/static',
+    src: 'src/static',
     dest: 'public',
   },
 };
@@ -67,10 +67,6 @@ const banner = `/*!
  */
 `;
 
-/**
- * @param {string} file
- * @returns {Object}
- */
 function getJSON(file) {
   try {
     return JSON.parse(fs.readFileSync(file));
@@ -79,8 +75,8 @@ function getJSON(file) {
   }
 }
 
-export function views() {
-  return gulp.src(`${paths.views.src}/**/*.ejs`, { since: gulp.lastRun(views) })
+export function pages() {
+  return gulp.src(`${paths.pages.src}/**/*.ejs`, { since: gulp.lastRun(pages) })
     // Create dependency tree
     .pipe(progeny({
       regexp: /<%-\s*include\(\s*['"]?([^'"]+)['"]?/,
@@ -96,7 +92,7 @@ export function views() {
     }))
     // Fill templates with data from json-files
     .pipe(data((file) => {
-      const global = getJSON(`${paths.views.src}/global.json`);
+      const global = getJSON(`${paths.pages.src}/global.json`);
       const local = getJSON(`${file.path.substr(0, file.path.indexOf(file.extname))}.json`);
       return { ...global, ...local };
     }))
@@ -109,19 +105,19 @@ export function views() {
       console.error(err.message);
 
       return {
-        title: 'Views',
+        title: 'Pages',
         // https://github.com/mikaelbr/gulp-notify/issues/106
         message: 'Something went wrong', // err.message - TODO wait for fixing gulp-notify
       };
     }))
     .pipe(htmlComb())
     .pipe(rename({ extname: '.html' }))
-    .pipe(gulp.dest(paths.views.dest))
+    .pipe(gulp.dest(paths.pages.dest))
     .pipe(browserSync.stream());
 }
 
 function updateUtime() {
-  return gulp.src(`${paths.views.src}/*.json`, { since: gulp.lastRun(views) })
+  return gulp.src(`${paths.pages.src}/*.json`, { since: gulp.lastRun(pages) })
     .pipe(through2(function update(file, ext, cb) {
       const now = new Date();
 
@@ -248,8 +244,8 @@ export function watch() {
     notify: false,
   });
 
-  gulp.watch(`${paths.views.src}/**/*.ejs`, views);
-  gulp.watch(`${paths.views.src}/*.json`, updateUtime);
+  gulp.watch(`${paths.pages.src}/**/*.ejs`, pages);
+  gulp.watch(`${paths.pages.src}/*.json`, updateUtime);
   gulp.watch(`${paths.styles.src}/**/*.scss`, styles);
   gulp.watch(`${paths.scripts.src}/**/*.js`, scripts);
   gulp.watch(`${paths.images.src}/**/*`, images);
@@ -267,7 +263,7 @@ function pack() {
     .pipe(gulp.dest('release'));
 }
 
-const make = gulp.parallel(views, styles, scripts, images, fonts, statics);
+const make = gulp.parallel(pages, styles, scripts, images, fonts, statics);
 
 export const build = gulp.series(clean, make, pack);
 

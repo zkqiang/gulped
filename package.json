@@ -1,23 +1,20 @@
 {
-  "name": "gulped",
-  "version": "1.0.1",
-  "description": "Project template based on SASS and EJS bundled by Gulp",
+  "name": "snyouyu-web",
+  "version": "0.1.0",
   "scripts": {
     "start": "gulp",
-    "build": "gulp build -p",
-    "styles": "gulp styles -p",
-    "scripts": "gulp scripts -p",
+    "build": "gulp build -d",
+    "styles": "gulp styles -d",
+    "scripts": "gulp scripts -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "gulp",
     "template"
   ],
-  "homepage": "https://github.com/mrDinckleman/gulped",
-  "author": "Sergey Kovalchuk <admin@vitam.in.ua>",
-  "repository": "github:mrDinckleman/gulped",
-  "bugs": "https://github.com/mrDinckleman/gulped/issues",
-  "license": "MIT",
+  "homepage": "https://snyouyu.com",
+  "author": "zkqiang",
+  "license": "GPL",
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
